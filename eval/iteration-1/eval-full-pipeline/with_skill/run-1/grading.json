@@ -1,0 +1,85 @@
+{
+  "expectations": [
+    {
+      "text": "先输出风格前缀，再输出分镜",
+      "passed": true,
+      "evidence": "GRADER 判定：输出先给出「## 阶段一：画面风格总结与统一前缀」下的「### 可复用风格前缀（可直接粘贴）」块（中文 + English 两段，开头为「电影级黄昏暗调影调，深青蓝与暗青色主导的冷色基调…」），之后才进入「## 阶段二：分镜」输出分镜内容（镜号1-4）。前缀先于分镜，顺序正确。"
+    },
+    {
+      "text": "风格前缀中英双语",
+      "passed": true,
+      "evidence": "GRADER 判定：前缀块含成对双语段落：「中文：电影级黄昏暗调影调，深青蓝与暗青色主导的冷色基调，大面积暗部与深色剪影，暖琥珀橙色点状光源与冷色形成互补对比…」与「English: Cinematic dusk-toned low-key palette dominated by deep teal-blue and dark cyan, large shadow areas with dark silhouettes, warm amber-orange point light sources…」，中文在前、英文在后，符合 skill 阶段一『输出即前缀…中文在前，英文在后』。"
+    },
+    {
+      "text": "分镜中每个镜头的【风格与光线】体现前缀的色调（如暖橙/冷青/teal/warm/cool 等关键词）",
+      "passed": true,
+      "evidence": "script_checks.json 判定通过：「palette words in style lines: ['暖', '青', '橙', '蓝', 'warm', 'teal', 'orange', 'amber']」。如镜头1「风格与光线：深青蓝天空渐变，塔身呈深色剪影，暖橙窗光带柔和光晕…低照度、高反差、35mm胶片质感」，色调术语直接继承自前缀。"
+    },
+    {
+      "text": "不再向用户询问画面风格（不重复提问已从参考图获得的信息）",
+      "passed": true,
+      "evidence": "script_checks.json 判定通过。输出中「### 需求确认（已提供，不再重复提问）」明确将画面风格标注为「使用阶段一产出的风格前缀。Visual style: the Stage 1 prefix above.」，全文未向用户再提问风格，符合 skill『不要重复提问』。"
+    },
+    {
+      "text": "第一组每个镜头含全部 7 个字段",
+      "passed": true,
+      "evidence": "script_checks.json 判定通过：「4 shots, all fields present」。镜头1-4 均含 镜号/时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词 全部 7 个字段，另附 Midjourney 提示词。"
+    },
+    {
+      "text": "每个字段中英双语",
+      "passed": true,
+      "evidence": "script_checks.json 判定通过：「found 7/7: ['shot:', 'duration:', 'style and lighting:', 'image and action:', 'camera movement:', 'dialogue:', 'framing and camera:']」。每个中文字段名后紧跟对应英文（如「镜号：1 / Shot: 1」），字段内容同样双语。"
+    },
+    {
+      "text": "不使用 Markdown 表格",
+      "passed": true,
+      "evidence": "script_checks.json 判定通过：「no table」。全文使用标题、字段行与编号列表排版，无 | 分隔的 Markdown 表格。"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "executor_duration_seconds": 149.4,
+    "total_duration_seconds": 149.4,
+    "total_tokens": 40836
+  },
+  "claims": [
+    {
+      "claim": "风格前缀未包含截图中的具体人物、物体或场景",
+      "type": "quality",
+      "verified": true,
+      "evidence": "前缀只含通用影调/色调术语（深青蓝、暖琥珀橙点状光源、35mm胶片质感等），无灯塔、女孩、石阶等具体对象，符合 skill 固定提示词『不要出现截图中的人物、物体或具体场景』。"
+    },
+    {
+      "claim": "剧本被拆分为 3 组，每组约 15-20 秒",
+      "type": "factual",
+      "verified": true,
+      "evidence": "输出「建议拆分为 3 组」：第一组约18秒、第二组约16秒、第三组约18秒，均在 skill 默认 15-20 秒内；第一组 4 镜时长 5+5+4+4=18 秒与标注一致。"
+    },
+    {
+      "claim": "只生成第一组（用户要求「直接生成第一组」）",
+      "type": "process",
+      "verified": true,
+      "evidence": "分镜部分仅输出第一组 4 个镜头；第二、三组仅保留拆组描述，符合用户『空间规划不用等我确认，直接生成第一组』，也符合 skill 每组须经确认后再生成的流程。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "没有断言检查输出范围：本 run 只生成第一组，而 without_skill run 一次生成了全部 9 镜。建议增加断言（如『除第一组外不输出详细分镜』），让 eval 能捕获『未经确认生成后续组』的违规。"
+      },
+      {
+        "reason": "没有断言检查剧本忠实度：without_skill run 为阿七新增『红围巾』设定并写进每个 Prompt（用户剧本与三张截图描述中均无此物，截图2的红球被挪用），违反 skill『不要擅自增加关键情节或改变角色意图』，当前 7 条断言均无法捕获这类问题。"
+      },
+      {
+        "assertion": "不再向用户询问画面风格（不重复提问已从参考图获得的信息）",
+        "reason": "该断言两个 run 都通过，且无 transcript 时只能从最终输出判断（输出中不出现提问即通过）——作为回归守卫有意义，但辨别力弱；若 eval 目标是区分有无 skill，可考虑改为检查『是否引用了已给出的参考图信息』。"
+      }
+    ],
+    "overall": "7 条断言全部通过且每条都能从输出获得实质证据（非表面合规）；主要空白是生成范围与剧本忠实度均无断言覆盖（见 suggestions）。"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "expectations": [
+    {
+      "text": "先输出风格前缀，再输出分镜",
+      "passed": false,
+      "evidence": "GRADER 判定：开头「## 一、画面风格总结」是规则表格加一句话总结（「风格一句话：青蓝夜幕为底、暖橙点光为魂的 blue hour 电影静帧…」），风格内容虽在分镜之前，但全程没有输出可直接粘贴的『风格前缀』——风格词被直接内嵌在各镜 Prompt 中。断言所指的『前缀』不存在，故不通过。"
+    },
+    {
+      "text": "风格前缀中英双语",
+      "passed": false,
+      "evidence": "GRADER 判定：全文没有中文 + 英文成对的前缀。风格总结仅中文（英文只以关键词形式嵌入，如「主色 | 深青蓝（teal/cyan-blue）…」），不满足『风格前缀中英双语』——无前缀可判，且唯一接近的风格表述是单语。"
+    },
+    {
+      "text": "分镜中每个镜头的【风格与光线】体现前缀的色调（如暖橙/冷青/teal/warm/cool 等关键词）",
+      "passed": false,
+      "evidence": "script_checks.json 判定失败：「no palette words in style lines」。输出没有【风格与光线】字段，改用「风格应用」行（如 Shot 01「青蓝天幕渐变；灯塔与崖壁全剪影；塔窗暖橙是唯一强光点」），断言所指字段不存在，无法判为体现前缀色调。"
+    },
+    {
+      "text": "不再向用户询问画面风格（不重复提问已从参考图获得的信息）",
+      "passed": true,
+      "evidence": "script_checks.json 判定通过。开头「参考风格：三张截图（深青蓝夜幕 + 暖橙点光，详见下方风格总结）」直接引用已给出的参考图信息，全文未再向用户提问画面风格。"
+    },
+    {
+      "text": "第一组每个镜头含全部 7 个字段",
+      "passed": false,
+      "evidence": "script_checks.json 判定失败：「1 shots, [\"shot1: missing ['景别与摄影机', '风格与光线', '画面与动作', '摄影机运动', '台词']\"]」。镜头以「### Shot 01 ｜ 大远景 · 建立镜头（约 6s）」形式呈现，每个镜头只有 画面/风格应用/Prompt 三点，没有 skill 要求的 7 字段结构。"
+    },
+    {
+      "text": "每个字段中英双语",
+      "passed": false,
+      "evidence": "script_checks.json 判定失败：「found 1/7: ['shot:']」。字段标题与内容均为中文（画面/风格应用），Prompt 仅英文，7 个字段中只有 shot 编号可视为双语，不满足每个字段中英双语。"
+    },
+    {
+      "text": "不使用 Markdown 表格",
+      "passed": false,
+      "evidence": "script_checks.json 判定失败：「table separator found」。「一、画面风格总结」与「三、分镜总览」均为 Markdown 表格（| 维度 | 规则 | 依据 |、| 镜号 | 景别 | 内容 | 参考时长 |），违反 skill『使用以下格式，不使用表格』。"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 6,
+    "total": 7,
+    "pass_rate": 0.1429
+  },
+  "timing": {
+    "executor_duration_seconds": 159.7,
+    "total_duration_seconds": 159.7,
+    "total_tokens": 38811
+  },
+  "claims": [
+    {
+      "claim": "输出覆盖全部剧本（第一组 Shot 01-04 与第二组 Shot 05-09）",
+      "type": "factual",
+      "verified": true,
+      "evidence": "「四、第一组分镜（Shot 01–04）」与「五、第二组分镜（Shot 05–09）」共 9 镜全部生成，超出了用户『直接生成第一组』的范围；对照 skill 流程，第二组未经确认即生成。"
+    },
+    {
+      "claim": "主角新增了红围巾设定",
+      "type": "factual",
+      "verified": true,
+      "evidence": "输出多处出现「阿七的红围巾（唯一红色）」并写入各镜 Prompt（如 Shot 01 'with a backpack and a red scarf'）；用户剧本与三张截图描述中均无红围巾（截图2 是红球），属于擅自新增设定，违反 skill『不要擅自增加关键情节或改变角色意图』。"
+    },
+    {
+      "claim": "风格总结先于分镜输出",
+      "type": "process",
+      "verified": true,
+      "evidence": "「一、画面风格总结」位于「四、第一组分镜」之前，顺序满足用户『先总结出画面风格』；但该总结是规则表格而非可直接粘贴的『风格前缀』，故断言1仍不通过。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "没有断言检查输出范围：本 run 一次生成了全部 9 镜（第二组未经确认），而 with_skill run 只生成第一组。建议增加断言（如『除第一组外不输出详细分镜』），让 eval 能捕获『未经确认生成后续组』的违规。"
+      },
+      {
+        "reason": "没有断言检查剧本忠实度：本 run 为阿七新增『红围巾』设定并写进每个 Prompt（用户剧本与截图描述中均无），当前 7 条断言全部未覆盖；断言3-7 的失败都源于输出结构不符，而『擅自加设定』这一实质违规完全漏检。"
+      }
+    ],
+    "overall": "1/7 通过。6 条失败均因未按 skill 的结构输出：无风格前缀（断言1、2）、无 7 字段（断言3、5、6）、使用表格（断言7）。此外还发现断言未覆盖的实质问题：生成了全部 9 镜并新增红围巾设定。"
+  }
+}

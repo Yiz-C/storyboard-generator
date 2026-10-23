@@ -1,0 +1,62 @@
+{
+  "expectations": [
+    {
+      "text": "开头确认收到剧本并给出拆分建议",
+      "passed": true,
+      "evidence": "Script check PASS: found ['收到剧本', '建议拆分', 'script received']. Spot-check: output opens with '收到剧本。建议拆分为 2 组：第一组（约 18 秒，5 个镜头）…第二组（约 16 秒，4 个镜头）…' plus the matching English 'Script received. I suggest dividing it into 2 groups'."
+    },
+    {
+      "text": "包含空间规划四要素：人物代号、人物位置与动作、摄影机位置、光源方向",
+      "passed": true,
+      "evidence": "Script check PASS: 'all present'. Dedicated '第一组空间与光线规划' section has all four: 【人物代号】(林远/@1, 深色大衣男人/@2), 【人物位置与动作】, 【摄影机位置】, 【光源方向】."
+    },
+    {
+      "text": "第一组每个镜头含全部 7 个字段（镜号/时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词）",
+      "passed": true,
+      "evidence": "Script check PASS: '5 shots, all fields present'. Spot-check: every shot (镜号：1–5) carries 时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词, e.g. Shot 1 lines 90–109 of output.md."
+    },
+    {
+      "text": "第一组镜头数为 3–5 个",
+      "passed": true,
+      "evidence": "Script check PASS: '5 shots'. Output contains 镜号：1 through 镜号：5 in Group 1 — 5 shots, within the 3–5 range."
+    },
+    {
+      "text": "每个字段中英双语（对应英文标签 Shot/Duration/Framing and camera/Style and lighting/Image and action/Camera movement/Dialogue）",
+      "passed": true,
+      "evidence": "Script check PASS: found 7/7 ['shot:', 'duration:', 'style and lighting:', 'image and action:', 'camera movement:', 'dialogue:', 'framing and camera:']. Each shot pairs Chinese and English labels, e.g. '### 镜号：1 / ### Shot: 1', '时长：4秒 / Duration: 4 seconds'."
+    },
+    {
+      "text": "不使用 Markdown 表格",
+      "passed": true,
+      "evidence": "Script check PASS: 'no table'. Spot-check of full output: headings, bullets and plain lines only; no pipe-and-dash table syntax anywhere."
+    },
+    {
+      "text": "结尾询问本组是否符合预期、是否继续下一组",
+      "passed": true,
+      "evidence": "Script check PASS: found ['是否符合预期', '继续规划']. Spot-check: final '收尾 / Next' section asks '本组分镜是否符合预期？需要修改，还是继续规划第二组（扔烟 → 消失雾中 → 追两步站住 → 血被雨水冲淡）？'"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "timing": {
+    "executor_duration_seconds": 234.7,
+    "total_duration_seconds": 234.7
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "包含空间规划四要素：人物代号、人物位置与动作、摄影机位置、光源方向",
+        "reason": "check_spatial only verifies '@1', '摄影机' and '光源' appear somewhere in the text; '人物位置与动作' is never actually checked, so an output with codes but no position/action description would still pass."
+      },
+      {
+        "assertion": "第一组镜头数为 3–5 个",
+        "reason": "shot_blocks splits only on '镜号', so outputs in another heading format are counted as 0–1 shots regardless of the real shot count (see without_skill run: 3 real shots counted as 1). Assertion 4 also overlaps heavily with assertion 3's format check."
+      }
+    ],
+    "overall": "All 7 verdicts match the observed output; 7/7 is genuine, not surface compliance — every shot is complete and bilingual, and no tables are used. Two script weaknesses worth fixing: the spatial check never verifies 位置与动作, and shot counting is bound to the '镜号' format."
+  }
+}

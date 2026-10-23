@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "text": "先输出风格前缀，再输出分镜",
+      "passed": null,
+      "evidence": "needs grader judgment"
+    },
+    {
+      "text": "风格前缀中英双语",
+      "passed": null,
+      "evidence": "needs grader judgment"
+    },
+    {
+      "text": "分镜中每个镜头的【风格与光线】体现前缀的色调（如暖橙/冷青/teal/warm/cool 等关键词）",
+      "passed": false,
+      "evidence": "no palette words in style lines"
+    },
+    {
+      "text": "不再向用户询问画面风格（不重复提问已从参考图获得的信息）",
+      "passed": true,
+      "evidence": "none"
+    },
+    {
+      "text": "第一组每个镜头含全部 7 个字段",
+      "passed": false,
+      "evidence": "1 shots, [\"shot1: missing ['景别与摄影机', '风格与光线', '画面与动作', '摄影机运动', '台词']\"]"
+    },
+    {
+      "text": "每个字段中英双语",
+      "passed": false,
+      "evidence": "found 1/7: ['shot:']"
+    },
+    {
+      "text": "不使用 Markdown 表格",
+      "passed": false,
+      "evidence": "table separator found"
+    }
+  ]
+}

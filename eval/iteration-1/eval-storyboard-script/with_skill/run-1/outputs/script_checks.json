@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "text": "开头确认收到剧本并给出拆分建议",
+      "passed": true,
+      "evidence": "found: ['收到剧本', '建议拆分', 'script received']"
+    },
+    {
+      "text": "包含空间规划四要素：人物代号、人物位置与动作、摄影机位置、光源方向",
+      "passed": true,
+      "evidence": "all present"
+    },
+    {
+      "text": "第一组每个镜头含全部 7 个字段（镜号/时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词）",
+      "passed": true,
+      "evidence": "5 shots, all fields present"
+    },
+    {
+      "text": "第一组镜头数为 3–5 个",
+      "passed": true,
+      "evidence": "5 shots"
+    },
+    {
+      "text": "每个字段中英双语（对应英文标签 Shot/Duration/Framing and camera/Style and lighting/Image and action/Camera movement/Dialogue）",
+      "passed": true,
+      "evidence": "found 7/7: ['shot:', 'duration:', 'style and lighting:', 'image and action:', 'camera movement:', 'dialogue:', 'framing and camera:']"
+    },
+    {
+      "text": "不使用 Markdown 表格",
+      "passed": true,
+      "evidence": "no table"
+    },
+    {
+      "text": "结尾询问本组是否符合预期、是否继续下一组",
+      "passed": true,
+      "evidence": "found: ['是否符合预期', '继续规划']"
+    }
+  ]
+}

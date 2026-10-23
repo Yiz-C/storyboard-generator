@@ -1,0 +1,380 @@
+{
+  "metadata": {
+    "skill_name": "storyboard-generator",
+    "skill_path": "/Users/yiz/.claude/skills/storyboard-generator",
+    "executor_model": "claude subagent (default)",
+    "analyzer_model": "claude subagent (default)",
+    "timestamp": "2026-10-23T14:47:59Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 149.4,
+        "tokens": 40836,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "先输出风格前缀，再输出分镜",
+          "passed": true,
+          "evidence": "GRADER 判定：输出先给出「## 阶段一：画面风格总结与统一前缀」下的「### 可复用风格前缀（可直接粘贴）」块（中文 + English 两段，开头为「电影级黄昏暗调影调，深青蓝与暗青色主导的冷色基调…」），之后才进入「## 阶段二：分镜」输出分镜内容（镜号1-4）。前缀先于分镜，顺序正确。"
+        },
+        {
+          "text": "风格前缀中英双语",
+          "passed": true,
+          "evidence": "GRADER 判定：前缀块含成对双语段落：「中文：电影级黄昏暗调影调，深青蓝与暗青色主导的冷色基调，大面积暗部与深色剪影，暖琥珀橙色点状光源与冷色形成互补对比…」与「English: Cinematic dusk-toned low-key palette dominated by deep teal-blue and dark cyan, large shadow areas with dark silhouettes, warm amber-orange point light sources…」，中文在前、英文在后，符合 skill 阶段一『输出即前缀…中文在前，英文在后』。"
+        },
+        {
+          "text": "分镜中每个镜头的【风格与光线】体现前缀的色调（如暖橙/冷青/teal/warm/cool 等关键词）",
+          "passed": true,
+          "evidence": "script_checks.json 判定通过：「palette words in style lines: ['暖', '青', '橙', '蓝', 'warm', 'teal', 'orange', 'amber']」。如镜头1「风格与光线：深青蓝天空渐变，塔身呈深色剪影，暖橙窗光带柔和光晕…低照度、高反差、35mm胶片质感」，色调术语直接继承自前缀。"
+        },
+        {
+          "text": "不再向用户询问画面风格（不重复提问已从参考图获得的信息）",
+          "passed": true,
+          "evidence": "script_checks.json 判定通过。输出中「### 需求确认（已提供，不再重复提问）」明确将画面风格标注为「使用阶段一产出的风格前缀。Visual style: the Stage 1 prefix above.」，全文未向用户再提问风格，符合 skill『不要重复提问』。"
+        },
+        {
+          "text": "第一组每个镜头含全部 7 个字段",
+          "passed": true,
+          "evidence": "script_checks.json 判定通过：「4 shots, all fields present」。镜头1-4 均含 镜号/时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词 全部 7 个字段，另附 Midjourney 提示词。"
+        },
+        {
+          "text": "每个字段中英双语",
+          "passed": true,
+          "evidence": "script_checks.json 判定通过：「found 7/7: ['shot:', 'duration:', 'style and lighting:', 'image and action:', 'camera movement:', 'dialogue:', 'framing and camera:']」。每个中文字段名后紧跟对应英文（如「镜号：1 / Shot: 1」），字段内容同样双语。"
+        },
+        {
+          "text": "不使用 Markdown 表格",
+          "passed": true,
+          "evidence": "script_checks.json 判定通过：「no table」。全文使用标题、字段行与编号列表排版，无 | 分隔的 Markdown 表格。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 234.7,
+        "tokens": 48874,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "开头确认收到剧本并给出拆分建议",
+          "passed": true,
+          "evidence": "Script check PASS: found ['收到剧本', '建议拆分', 'script received']. Spot-check: output opens with '收到剧本。建议拆分为 2 组：第一组（约 18 秒，5 个镜头）…第二组（约 16 秒，4 个镜头）…' plus the matching English 'Script received. I suggest dividing it into 2 groups'."
+        },
+        {
+          "text": "包含空间规划四要素：人物代号、人物位置与动作、摄影机位置、光源方向",
+          "passed": true,
+          "evidence": "Script check PASS: 'all present'. Dedicated '第一组空间与光线规划' section has all four: 【人物代号】(林远/@1, 深色大衣男人/@2), 【人物位置与动作】, 【摄影机位置】, 【光源方向】."
+        },
+        {
+          "text": "第一组每个镜头含全部 7 个字段（镜号/时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词）",
+          "passed": true,
+          "evidence": "Script check PASS: '5 shots, all fields present'. Spot-check: every shot (镜号：1–5) carries 时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词, e.g. Shot 1 lines 90–109 of output.md."
+        },
+        {
+          "text": "第一组镜头数为 3–5 个",
+          "passed": true,
+          "evidence": "Script check PASS: '5 shots'. Output contains 镜号：1 through 镜号：5 in Group 1 — 5 shots, within the 3–5 range."
+        },
+        {
+          "text": "每个字段中英双语（对应英文标签 Shot/Duration/Framing and camera/Style and lighting/Image and action/Camera movement/Dialogue）",
+          "passed": true,
+          "evidence": "Script check PASS: found 7/7 ['shot:', 'duration:', 'style and lighting:', 'image and action:', 'camera movement:', 'dialogue:', 'framing and camera:']. Each shot pairs Chinese and English labels, e.g. '### 镜号：1 / ### Shot: 1', '时长：4秒 / Duration: 4 seconds'."
+        },
+        {
+          "text": "不使用 Markdown 表格",
+          "passed": true,
+          "evidence": "Script check PASS: 'no table'. Spot-check of full output: headings, bullets and plain lines only; no pipe-and-dash table syntax anywhere."
+        },
+        {
+          "text": "结尾询问本组是否符合预期、是否继续下一组",
+          "passed": true,
+          "evidence": "Script check PASS: found ['是否符合预期', '继续规划']. Spot-check: final '收尾 / Next' section asks '本组分镜是否符合预期？需要修改，还是继续规划第二组（扔烟 → 消失雾中 → 追两步站住 → 血被雨水冲淡）？'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 89.6,
+        "tokens": 34520,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "输出是可直接复用的提示词前缀，而不是逐图分析报告",
+          "passed": true,
+          "evidence": "输出以可直接粘贴的前缀为主体：「## 可复用提示词前缀（直接粘贴使用）」下是一段完整中文前缀（\"深青蓝色暗夜电影氛围，青橙互补配色：以低饱和、深邃的冷青蓝为画面基底……夜景氛围。\"）和对应英文段；「使用说明」第1条明确\"将该前缀放在提示词开头，后面接你希望生成的具体场景描述即可；前缀本身不含任何具体物体或场景，可跨镜头、跨画面重复使用\"。开头的「风格分析（简要）」仅5条跨图综合的共同风格要点，没有按图1/图2/图3分节的逐图分析，交付形态是前缀而非分析报告。"
+        },
+        {
+          "text": "三张图合成为一个统一风格前缀，而非三份独立输出",
+          "passed": true,
+          "evidence": "全文只有一份前缀（中文一段+英文一段），分析部分明示是共同风格的提炼（\"三张参考截图的共同主导风格\"），并主动剔除单张特有元素：\"注：截图2中的红球为单张特有元素，不纳入统一风格前缀。\" 没有任何按图拆分的三份独立输出，使用说明称\"可跨镜头、跨画面重复使用\"。"
+        },
+        {
+          "text": "使用至少 2 个电影摄影/调色专业术语（影调、色调、色温、饱和度、对比度、高光、阴影、主光、低调照明、胶片颗粒等）",
+          "passed": true,
+          "evidence": "采纳脚本判定（passed=true，\"hit terms: ['影调', '色调', '饱和度', '暗部', '主光', '低调']\"）。输出中确凿出现\"低调布光\"\"柔和暖色主光自画面一侧透入\"\"整体饱和度克制、影调深沉厚重\"\"细腻胶片颗粒\"\"低饱和\"等，远超2个专业术语。"
+        },
+        {
+          "text": "前缀不出现图中标志性物体（球、桌面、窗户、建筑、水面）",
+          "passed": true,
+          "evidence": "按特殊说明仅评判前缀本体：中文前缀段（\"深青蓝色暗夜电影氛围……夜景氛围。\"）不含球/桌面/窗户/建筑/水面；英文前缀段同样不含（\"warm orange practical lights — glowing points, pools and horizontal streaks of light\"中的 pools 指光斑，非水面）。脚本的两个FAIL命中均为误报：(1) '球' 出自前缀之外的说明注（第13行\"注：截图2中的红球为单张特有元素，不纳入统一风格前缀。\"）——该注恰恰是排除物体的说明；(2) 'sphere' 是英文前缀中 \"atmo-sphere\" 的子串误匹配，并非真的出现球体。前缀本身干净，判定通过。"
+        },
+        {
+          "text": "前缀不出现具体场景名词（街道、城市、码头、港口）",
+          "passed": true,
+          "evidence": "采纳脚本判定（passed=true，evidence \"none\"）。中英文前缀段均不含街道/城市/码头/港口；grep 复核确认这些词在全文（含分析注）都未出现。"
+        },
+        {
+          "text": "中文输出在前，英文输出在后",
+          "passed": true,
+          "evidence": "采纳脚本判定（passed=true，\"first CJK@2 first EN@64 EN letters=803\"）。文档结构为「### 中文」段在前、「### English」段在后，中文前缀先于英文前缀。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.1429,
+        "passed": 1,
+        "failed": 6,
+        "total": 7,
+        "time_seconds": 159.7,
+        "tokens": 38811,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "先输出风格前缀，再输出分镜",
+          "passed": false,
+          "evidence": "GRADER 判定：开头「## 一、画面风格总结」是规则表格加一句话总结（「风格一句话：青蓝夜幕为底、暖橙点光为魂的 blue hour 电影静帧…」），风格内容虽在分镜之前，但全程没有输出可直接粘贴的『风格前缀』——风格词被直接内嵌在各镜 Prompt 中。断言所指的『前缀』不存在，故不通过。"
+        },
+        {
+          "text": "风格前缀中英双语",
+          "passed": false,
+          "evidence": "GRADER 判定：全文没有中文 + 英文成对的前缀。风格总结仅中文（英文只以关键词形式嵌入，如「主色 | 深青蓝（teal/cyan-blue）…」），不满足『风格前缀中英双语』——无前缀可判，且唯一接近的风格表述是单语。"
+        },
+        {
+          "text": "分镜中每个镜头的【风格与光线】体现前缀的色调（如暖橙/冷青/teal/warm/cool 等关键词）",
+          "passed": false,
+          "evidence": "script_checks.json 判定失败：「no palette words in style lines」。输出没有【风格与光线】字段，改用「风格应用」行（如 Shot 01「青蓝天幕渐变；灯塔与崖壁全剪影；塔窗暖橙是唯一强光点」），断言所指字段不存在，无法判为体现前缀色调。"
+        },
+        {
+          "text": "不再向用户询问画面风格（不重复提问已从参考图获得的信息）",
+          "passed": true,
+          "evidence": "script_checks.json 判定通过。开头「参考风格：三张截图（深青蓝夜幕 + 暖橙点光，详见下方风格总结）」直接引用已给出的参考图信息，全文未再向用户提问画面风格。"
+        },
+        {
+          "text": "第一组每个镜头含全部 7 个字段",
+          "passed": false,
+          "evidence": "script_checks.json 判定失败：「1 shots, [\"shot1: missing ['景别与摄影机', '风格与光线', '画面与动作', '摄影机运动', '台词']\"]」。镜头以「### Shot 01 ｜ 大远景 · 建立镜头（约 6s）」形式呈现，每个镜头只有 画面/风格应用/Prompt 三点，没有 skill 要求的 7 字段结构。"
+        },
+        {
+          "text": "每个字段中英双语",
+          "passed": false,
+          "evidence": "script_checks.json 判定失败：「found 1/7: ['shot:']」。字段标题与内容均为中文（画面/风格应用），Prompt 仅英文，7 个字段中只有 shot 编号可视为双语，不满足每个字段中英双语。"
+        },
+        {
+          "text": "不使用 Markdown 表格",
+          "passed": false,
+          "evidence": "script_checks.json 判定失败：「table separator found」。「一、画面风格总结」与「三、分镜总览」均为 Markdown 表格（| 维度 | 规则 | 依据 |、| 镜号 | 景别 | 内容 | 参考时长 |），违反 skill『使用以下格式，不使用表格』。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 7,
+        "total": 7,
+        "time_seconds": 174.9,
+        "tokens": 40842,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "开头确认收到剧本并给出拆分建议",
+          "passed": false,
+          "evidence": "Script check FAIL: 'none' — no '收到剧本', '建议拆分' or 'script received'. Spot-check: the opening jumps straight to '按你的要求：空间规划不等待确认，第一组（镜 1–3）已直接生成完整提示词；第二、三组也一并给出' — the group split is stated as done, not offered as a suggestion, and receipt of the script is never explicitly acknowledged."
+        },
+        {
+          "text": "包含空间规划四要素：人物代号、人物位置与动作、摄影机位置、光源方向",
+          "passed": false,
+          "evidence": "Script check FAIL: missing ['人物代号(@1)', '摄影机位置']. Spot-check: the 空间规划 section names 林远/神秘人 by name (with English anchors) but uses no @1/@2 codes, and defines 参照物/轴线规则/暖色纪律 with no 摄影机位置 element; light is handled per-shot as 光效 only."
+        },
+        {
+          "text": "第一组每个镜头含全部 7 个字段（镜号/时长/景别与摄影机/风格与光线/画面与动作/摄影机运动/台词）",
+          "passed": false,
+          "evidence": "Script check FAIL: \"1 shots, [shot1: missing ['时长', '景别与摄影机', '风格与光线', '画面与动作', '摄影机运动', '台词']]\" — the only '镜号' occurrence is the 分镜总览 table header. Spot-check: shots use '### 镜 N ·' headings with 画面/运动/光效/节奏 bullets instead of the 7 required fields."
+        },
+        {
+          "text": "第一组镜头数为 3–5 个",
+          "passed": false,
+          "evidence": "Script check FAIL: '1 shots' (verdict adopted per instructions). Spot-check caveat: Group 1 actually contains 镜 1–3 under '### 镜 N' headings — 3 shots, which would satisfy 3–5 on a literal reading; the script undercounts because it splits shots only on '镜号', which appears once (the table header). Format-detection artifact, not a genuinely empty group."
+        },
+        {
+          "text": "每个字段中英双语（对应英文标签 Shot/Duration/Framing and camera/Style and lighting/Image and action/Camera movement/Dialogue）",
+          "passed": false,
+          "evidence": "Script check FAIL: found 0/7: []. Spot-check: per-shot labels are 画面/运动/光效/节奏; none of the required English field labels appear anywhere in the output."
+        },
+        {
+          "text": "不使用 Markdown 表格",
+          "passed": false,
+          "evidence": "Script check FAIL: 'table separator found'. Spot-check: the '分镜总览' section is a Markdown table with header row '| 组 | 镜号 | 景别 | 画面内容 | 关键设计 |' and separator row '|---|---|---|---|---|'."
+        },
+        {
+          "text": "结尾询问本组是否符合预期、是否继续下一组",
+          "passed": false,
+          "evidence": "Script check FAIL: 'none'. Spot-check: the output ends with a '制作备注' tips section about Midjourney practice; no question about whether the group matches expectations or whether to continue to the next group."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 2,
+        "failed": 4,
+        "total": 6,
+        "time_seconds": 145.8,
+        "tokens": 37519,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "输出是可直接复用的提示词前缀，而不是逐图分析报告",
+          "passed": false,
+          "evidence": "输出主体是一份风格分析报告而非可直接粘贴的前缀：结构为「一、一句话风格定位」「二、风格拆解」（色值表、逐图引用如\"（图2 的红球）\"\"（图3）\"\"（图2 是左侧透入）\"）「三、可复用提示词（复制即用）」「四、三张参考对应的现成'场景段'」「五、可选调钮」五节。虽然第三节提供了可用的中英文模板（\"深夜蓝调电影感扁平插画……【主体内容】……\"），但它只是嵌在五节分析报告中的一节，且模板含需手工替换的【主体内容】/[SUBJECT]占位符；整体形态是\"风格总结报告+附模板\"，并非以提示词前缀为交付物。"
+        },
+        {
+          "text": "三张图合成为一个统一风格前缀，而非三份独立输出",
+          "passed": false,
+          "evidence": "除统一模板外，第四节明确给出三份按图拆分的独立输出：\"① 城市夜景（图1）：画面下方是深色建筑剪影……\"\"② 室内暗调静物（图2）：深色桌面位于画面下方……红色的球\"\"③ 水面夜景（图3）：天空与水面相接……\"，并说明\"这三段可以当'零件库'存起来，也可以直接换掉里面的具体物体\"。即一份统一模板+三份独立输出，违反\"而非三份独立输出\"。"
+        },
+        {
+          "text": "使用至少 2 个电影摄影/调色专业术语（影调、色调、色温、饱和度、对比度、高光、阴影、主光、低调照明、胶片颗粒等）",
+          "passed": true,
+          "evidence": "采纳脚本判定（passed=true，\"hit terms: ['影调', '主光', '剪影', 'contrast', 'film grain', 'teal']\"）。确凿命中包括\"主光\"（第19/33/41/81/89行）、英文模板\"Strong teal-and-orange color contrast\"（对比度）、负提示词\"film grain\"（胶片颗粒）、\"teal-orange（青橙）电影调色\"，≥2个专业术语（脚本中的'影调'是\"电影调色\"的子串命中，但不影响结论）。"
+        },
+        {
+          "text": "前缀不出现图中标志性物体（球、桌面、窗户、建筑、水面）",
+          "passed": false,
+          "evidence": "采纳脚本判定（passed=false，\"banned found: ['球', '桌面', '窗户', '建筑', '水面', 'water']\"）。命中遍布全文：第18-20行色值表（\"建筑、山体、物体\"\"窗户、路灯\"\"（图2 的红球）\"）、第33行\"路灯、窗户、一束主光\"、第35行\"遇到水面或反光面\"、第80-82行三份场景段（\"深色建筑剪影……方形窗户\"\"深色桌面……红色的球\"\"天空与水面相接\"）、第84行\"建筑→山、桥……红球→任何想突出的物件\"、第76行\"water\"⊂\"watermark\"。输出整体未做到不含标志性物体。"
+        },
+        {
+          "text": "前缀不出现具体场景名词（街道、城市、码头、港口）",
+          "passed": false,
+          "evidence": "采纳脚本判定（passed=false，\"banned found: ['城市']\"）。命中第80行\"① 城市夜景（图1）\"（三份场景段之一）。"
+        },
+        {
+          "text": "中文输出在前，英文输出在后",
+          "passed": true,
+          "evidence": "采纳脚本判定（passed=true，\"first CJK@2 first EN@430 EN letters=586\"）。文档结构为「### 中文模板」段先于「### 英文模板（Midjourney / SD 等通用）」段，中文模板先于英文模板。"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 157.9,
+        "stddev": 72.9225,
+        "min": 89.6,
+        "max": 234.7
+      },
+      "tokens": {
+        "mean": 41410,
+        "stddev": 5874.0,
+        "min": 34520,
+        "max": 48874
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.1576,
+        "stddev": 0.1655,
+        "min": 0.0,
+        "max": 0.33
+      },
+      "time_seconds": {
+        "mean": 160.1333,
+        "stddev": 14.5548,
+        "min": 145.8,
+        "max": 174.9
+      },
+      "tokens": {
+        "mean": 39057.3,
+        "stddev": 1367.7,
+        "min": 37519,
+        "max": 40842
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.84",
+      "time_seconds": "-2.2",
+      "tokens": "+2353"
+    }
+  },
+  "notes": [
+    "非判别断言（两配置均通过，未区分 skill 价值）：用例1『专业术语』『中文在前』与用例3『不重复问风格』——下轮考虑收紧或替换。",
+    "检查脚本误报：禁用词整文扫描+子串匹配（'atmo-sphere'）导致用例1有skill版假FAIL，评分代理按『前缀本身』裁定通过；下轮脚本改为前缀区域+词边界。",
+    "检查脚本少报：用例2基线实际生成3镜（'### 镜 N'标题），脚本仅按『镜号』切分计为1镜——格式探测局限，下轮补标题式镜头计数。",
+    "基线超范围交付：两个基线都生成了全部组（用户只要第一组），下轮加『仅生成第一组』断言。",
+    "基线用例3把截图红球挪用为角色『红围巾』道具（剧本无此物），skill 的『不得擅自增加关键情节』规则有效防止；下轮可加剧本保真断言。",
+    "耗时基本持平：有skill均值157.9s vs 无skill 160.1s；用例1有skill反而快63%（89.6 vs 145.8s）。token 均值 +2353（主要因 skill 要求双语完整格式）。"
+  ]
+}
